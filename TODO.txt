@@ -1,0 +1,20 @@
+# Potential changes to gian better IoU
+    - Epoch change  
+    - Augmentations
+    - Learning rate
+    - Different model
+    - More params
+    - Code change
+    - Batch change
+    - Better dataset
+    - Etc
+
+# Things to be done
+    - Comment code for clarity
+    - Better documentation within readme with relevant screenshots
+    - More team commits for greater involvement
+    - Docker env
+    - CI/CD Pipeline
+    - Add badges to readme
+    - Test different models on seperate branches
+    - etc
