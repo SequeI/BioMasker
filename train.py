@@ -8,7 +8,8 @@ seed_everything(2023)
 
 def main():
     datamodule = SegDataModule(batch_size=8)
-    model = SegModel()
+    neuralnet = SegModel(5, lossWeights=[torch.tensor([0.1]), torch.tensor([0.4]), torch.tensor([1.]),
+                                      torch.tensor([4]), torch.tensor([10])])
 
     checkpoint_callback = ModelCheckpoint(
         dirpath="checkpoints",
@@ -20,7 +21,7 @@ def main():
 
     trainer = pl.Trainer(max_epochs=20, callbacks=[checkpoint_callback], log_every_n_steps=10)
 
-    trainer.fit(model, datamodule=datamodule)
+    trainer.fit(neuralnet, datamodule=datamodule)
 
 
 if __name__ == "__main__":

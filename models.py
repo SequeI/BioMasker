@@ -68,7 +68,6 @@ class SegModel(nn.Module):
             
         return sum(losses)
 
-    if __name__ == '__main__':
-        neuralnet = SegModel(5, lossWeights=[torch.tensor([0.1]), torch.tensor([0.4]), torch.tensor([1.]),
-                                      torch.tensor([4]), torch.tensor([10])])
+   
+        
         
