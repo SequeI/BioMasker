@@ -10,7 +10,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 seed_everything(2023)
 
-TrainFunc(loader, model, optim, loss, scaler):
+def TrainFunc(loader, model, optim, loss, scaler):
     loop = tqdm(loader)
 
     for batch_idx, (data, targets) in enumerate(loop):
