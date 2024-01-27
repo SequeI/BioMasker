@@ -9,7 +9,7 @@ from torch.utils.data import Dataset, DataLoader
 
 
 class SegDataset(Dataset):
-    def __init__(self, root_dir="data", phase="warmup", split="train", transform=None):
+    def __init__(self, root_dir="data", phase="", split="train", transform=None):
         self.root_dir = Path(root_dir)
         self.img_dir = self.root_dir / phase / "img" / split
         self.ann_dir = self.root_dir / phase / "ann" / split
@@ -33,7 +33,7 @@ class SegDataset(Dataset):
 
 
 class SegDataModule(pl.LightningDataModule):
-    def __init__(self, root_dir="data", phase="warmup", batch_size: int = 8):
+    def __init__(self, root_dir="data", phase="", batch_size: int = 16):
         super().__init__()
         self.root_dir = root_dir
         self.phase = phase
@@ -44,7 +44,12 @@ class SegDataModule(pl.LightningDataModule):
             root_dir=self.root_dir,
             phase=self.phase,
             split="train",
-            transform=A.Compose([A.RandomCrop(380, 380), ToTensorV2()]),
+            transform=A.Compose([
+                    A.RandomCrop(380, 380),
+                    A.RandomBrightnessContrast(brightness_range=(0.8, 1.2), contrast_range=(0.8, 1.2)),
+                    A.RandomHueSaturationValue(hue_shift_limit=0.2, sat_shift_limit=0.2, val_shift_limit=0.2),
+                    ToTensorV2(),
+            ]),
         )
         self.valid = SegDataset(
             root_dir=self.root_dir,
@@ -61,9 +66,4 @@ class SegDataModule(pl.LightningDataModule):
 
     def test_dataloader(self):
         return DataLoader(self.valid, batch_size=1, shuffle=False)
-
-
-if __name__ == "__main__":
-    ds = SegDataset()
-    img, ann = ds[10]
-    print("Done!")
+   
