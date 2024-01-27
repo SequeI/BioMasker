@@ -1,6 +1,8 @@
 from typing import List
 import numpy as np
 from matplotlib import pyplot as plt
+import torch
+import torchvision
 
 
 def mask_to_rle(mask: np.ndarray):
@@ -33,38 +35,34 @@ def mask_to_rgb(mask: np.ndarray, label_to_color: dict):
     )
     return mask_colors
 
+def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
+    print("=> Saving checkpoint")
+    torch.save(state, filename)
 
-def show_in_grid(
-    images: List[np.ndarray],
-    num_rows,
-    num_cols,
-    show_plot=False,
-    savefig_path=None,
-    size_factor=10,
-    x_labels=[],
-):
-    plt.ioff()
-    fig, axs = plt.subplots(
-        num_rows, num_cols, figsize=(num_cols * size_factor, num_rows * size_factor)
+def load_checkpoint(checkpoint, model):
+    print("=> Loading checkpoint")
+    model.load_state_dict(checkpoint["state_dict"])
+
+def check_accuracy(loader, model, device="cuda"):
+    num_correct = 0
+    num_pixels = 0
+    dice_score = 0
+    model.eval()
+
+    with torch.no_grad():
+        for x, y in loader:
+            x = x.to(device)
+            y = y.to(device).unsqueeze(1)
+            preds = torch.sigmoid(model(x))
+            preds = (preds > 0.5).float()
+            num_correct += (preds == y).sum()
+            num_pixels += torch.numel(preds)
+            dice_score += (2 * (preds * y).sum()) / (
+                (preds + y).sum() + 1e-8
+            )
+
+    print(
+        f"Got {num_correct}/{num_pixels} with acc {num_correct/num_pixels*100:.2f}"
     )
-    fig.tight_layout()
-
-    for i, img in enumerate(images):
-        row = i // num_cols
-        col = i % num_cols
-        if num_rows > 1:
-            ax = axs[row, col]
-        else:
-            ax = axs[i]
-        ax.axis("off")
-        ax.imshow(img)
-
-        if row == num_rows - 1:
-            if len(x_labels) > 0:
-                ax.set_title(x_labels[col])
-
-    if show_plot:
-        plt.show()
-    else:
-        fig.savefig(savefig_path)
-        plt.close()
+    print(f"Dice score: {dice_score/len(loader)}")
+    model.train()
