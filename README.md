@@ -18,13 +18,13 @@ The primary objectives of this project were to:
 
 2. **PyCNN Architecture:** The PyCNN architecture employed a multi-scale feature extraction approach, combining downsampling and upsampling layers to capture both global and granular features. This allowed the model to effectively identify both coarse vegetation boundaries and finer details, such as individual trees or shrubs.
 
-3. **Model Training:** The PyCNN model was trained using the Adam optimizer and the categorical cross-entropy loss function. The training process involved optimizing the model's parameters to minimize the prediction loss and improve its overall accuracy.
+3. **Model Training:** The PyCNN model was trained using the <optimname> optimizer and the <lossfuncname> loss function. The training process involved optimizing the model's parameters to minimize the prediction loss and improve its overall accuracy.
 
-4. **Model Evaluation:** The trained PyCNN model was evaluated on a separate validation set to assess its performance in predicting dense foliage on unseen data. The model's accuracy was measured using the metrics of precision, recall, and F1-score.
+4. **Model Evaluation:** The trained PyCNN model was evaluated on a separate validation set to assess its performance in predicting dense foliage on unseen data. The model's accuracy was measured using the metrics of <accuracymetricname>.
 
 ### Project Results
 
-The PyCNN model achieved an impressive accuracy of 89.2% in predicting dense foliage from aerial drone images. This performance demonstrates the model's ability to accurately extract and classify vegetation patterns, making it a promising tool for various applications in land cover assessment, environmental monitoring, and natural resource management.
+The PyCNN model achieved an impressive accuracy of <percentacc> in predicting dense foliage from aerial drone images. This performance demonstrates the model's ability to accurately extract and classify vegetation patterns, making it a promising tool for various applications in land cover assessment, environmental monitoring, and natural resource management.
 
 ### Project Conclusion
 
